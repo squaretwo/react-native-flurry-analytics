@@ -22,7 +22,11 @@ export default class FlurryAnalytics {
       return;
     }
 
-    RNFlurryAnalytics.startSession(apiKey);
+    try {
+      RNFlurryAnalytics.startSession(apiKey);
+    } catch (error) {
+      console.error(error);
+    }
 
     startSessionIsCalled = true;
   }
