@@ -17,7 +17,10 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(startSession:(NSString *)apiKey)
 {
-  [Flurry startSession:apiKey withSessionBuilder:sessionBuilder];
+  dispatch_async(dispatch_get_main_queue(), ^{
+        [Flurry startSession:apiKey withSessionBuilder:sessionBuilder];
+        [Flurry setLogLevel: FlurryLogLevelAll];
+    });
 }
 
 RCT_EXPORT_METHOD(setAppVersion:(NSString *)version)

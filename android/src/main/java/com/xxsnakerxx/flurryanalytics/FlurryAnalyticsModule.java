@@ -35,12 +35,17 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void startSession(String apiKey) {
-    mFlurryAgentBuilder
-            .withListener(new FlurryAgentListener() {
-              @Override
-              public void onSessionStarted() {}
-            })
-            .build(getReactApplicationContext(), apiKey);
+    new Handler(Looper.getMainLooper()).post(new Runnable() {
+      @Override
+      public void run() {
+        mFlurryAgentBuilder
+                .withListener(new FlurryAgentListener() {
+                  @Override
+                  public void onSessionStarted() {}
+                })
+                .build(getReactApplicationContext(), apiKey);
+      }
+    });
   }
 
   @ReactMethod
