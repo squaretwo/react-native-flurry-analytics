@@ -36,7 +36,7 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void startSession(String apiKey) {
+  public void startSession(final String apiKey) {
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
