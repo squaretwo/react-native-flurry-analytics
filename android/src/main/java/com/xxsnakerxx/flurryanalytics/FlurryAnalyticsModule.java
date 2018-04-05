@@ -1,5 +1,7 @@
 package com.xxsnakerxx.flurryanalytics;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
