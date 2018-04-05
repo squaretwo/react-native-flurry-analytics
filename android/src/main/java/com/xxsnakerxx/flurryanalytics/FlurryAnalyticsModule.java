@@ -1,5 +1,6 @@
 package com.xxsnakerxx.flurryanalytics;
 
+import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -40,12 +41,15 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
+        if (getCurrentActivity() == null) {
+          return;
+        }
         mFlurryAgentBuilder
                 .withListener(new FlurryAgentListener() {
                   @Override
                   public void onSessionStarted() {}
                 })
-                .build(getReactApplicationContext(), apiKey);
+                .build(getCurrentActivity(), apiKey);
       }
     });
   }
