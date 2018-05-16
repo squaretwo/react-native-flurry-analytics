@@ -1,9 +1,9 @@
 package com.xxsnakerxx.flurryanalytics;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -37,12 +37,17 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void startSession(String apiKey) {
-    mFlurryAgentBuilder
-            .withListener(new FlurryAgentListener() {
-              @Override
-              public void onSessionStarted() {}
-            })
-            .build(getCurrentActivity(), apiKey);
+    new Handler(Looper.getMainLooper()).post(new Runnable() {
+      @Override
+      public void run() {
+        mFlurryAgentBuilder
+                .withListener(new FlurryAgentListener() {
+                  @Override
+                  public void onSessionStarted() {}
+                })
+                .build(getReactApplicationContext(), apiKey);
+      }
+    });
   }
 
   @ReactMethod
@@ -85,6 +90,11 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void logPageView() {
+    FlurryAgent.onPageView();
+  }
+
+  @ReactMethod
   public void setUserID(String userID) {
     FlurryAgent.setUserId(userID);
   }
@@ -103,11 +113,6 @@ public class FlurryAnalyticsModule extends ReactContextBaseJavaModule {
       _gender = Constants.FEMALE;
     }
     FlurryAgent.setGender(_gender);
-  }
-
-  @ReactMethod
-  public void setEventLoggingEnabled(boolean enabled) {
-    FlurryAgent.setLogEvents(enabled);
   }
 
   private static Map<String, String> toMap(@Nullable ReadableMap readableMap) {
